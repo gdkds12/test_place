@@ -1,7 +1,7 @@
 "use client";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef } from "react";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Menu, ArrowUpRight } from "lucide-react";
 
 // Section Data
 const cards = [
@@ -12,7 +12,7 @@ const cards = [
     textColor: "white",
     type: "static",
     content: (
-      <div className="flex flex-col justify-end h-full pb-20">
+      <div className="flex flex-col justify-center h-full pb-20 pt-20">
         <h1 className="text-[15vw] leading-[0.8] font-bold tracking-tighter uppercase mix-blend-overlay">
           Raw <br/> Materials
         </h1>
@@ -47,6 +47,37 @@ const cards = [
             </button>
          </div>
        </div>
+    )
+  },
+  { 
+    id: "journal", 
+    bg: "var(--color-rm-green)", 
+    title: "Journal", 
+    textColor: "black",
+    type: "static",
+    content: (
+        <div className="flex flex-col h-full">
+             <div className="grid gap-6 mt-10">
+                {[
+                    { title: "The Death of Flat Design", date: "Oct 24", tag: "Opinion" },
+                    { title: "Building specifically for AI", date: "Sep 12", tag: "Tech" },
+                    { title: "Our 2025 Design Trends", date: "Aug 05", tag: "Report" }
+                ].map((post, i) => (
+                    <div key={i} className="group flex flex-col md:flex-row md:items-center justify-between border-b border-black/10 pb-6 cursor-pointer hover:pl-4 transition-all duration-300">
+                        <div>
+                            <span className="text-xs font-mono uppercase tracking-widest opacity-60 mb-2 block">{post.tag} — {post.date}</span>
+                            <h3 className="text-3xl md:text-5xl font-bold leading-tight group-hover:text-white transition-colors">{post.title}</h3>
+                        </div>
+                        <ArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity w-10 h-10" />
+                    </div>
+                ))}
+             </div>
+             <div className="mt-auto pb-20">
+                <p className="text-xl font-medium max-w-2xl opacity-80">
+                    Thoughts on interface design, creative coding, and the future of digital products.
+                </p>
+             </div>
+        </div>
     )
   },
   { 
@@ -89,10 +120,13 @@ const cards = [
 export default function StickyCardStack() {
   return (
     <div className="bg-black min-h-screen pb-20 font-sans">
-      {/* Sticky Header with Backdrop Blur and Mix-Blend-Mode */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between px-6 py-6 mix-blend-difference text-white pointer-events-none backdrop-blur-md bg-transparent">
-        <span className="text-xl font-bold tracking-tighter uppercase">Raw Materials</span>
-        <span className="font-mono text-sm">[MENU]</span>
+      {/* Sticky Header: No Title, Icon Menu, No Blur */}
+      <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between px-6 py-6 mix-blend-difference text-white pointer-events-none bg-transparent">
+        {/* Empty span to maintain flex-between layout if needed, or remove title completely */}
+        <span></span> 
+        <button className="pointer-events-auto hover:opacity-50 transition-opacity">
+            <Menu className="w-8 h-8" />
+        </button>
       </nav>
 
       <div className="flex flex-col relative">
