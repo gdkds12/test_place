@@ -1,207 +1,159 @@
 "use client";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import { useRef } from "react";
-import { ArrowDown, Menu, ArrowUpRight } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
+import { Menu, ArrowDown, ArrowUpRight } from "lucide-react";
 
-// Section Data
-const cards = [
-  { 
-    id: "hello", 
-    bg: "var(--color-rm-orange)", 
-    title: "안녕하세요", 
-    textColor: "white",
-    type: "static",
+// The actual site has specific card heights and behaviors
+const sections = [
+  {
+    id: "landing",
+    bg: "var(--color-rm-beige)",
     content: (
-      <div className="flex flex-col justify-center h-full pb-20 pt-20">
-        <h1 className="text-[15vw] leading-[0.8] font-bold tracking-tighter uppercase mix-blend-overlay break-keep">
-          로우 <br/> 머티리얼즈
+      <div className="flex flex-col items-center w-full px-6 md:px-12 pt-24">
+        <div className="flex justify-between w-full mb-8 border-b border-rm-black/10 pb-4">
+            <span className="text-sm font-medium uppercase tracking-tighter">Raw Materials</span>
+            <span className="text-sm font-medium uppercase tracking-tighter">Studio &copy; 2025</span>
+        </div>
+        <h1 className="text-[18vw] leading-[0.8] font-bold tracking-tighter uppercase w-full text-left mb-12">
+          Unusual<br/>Digital
         </h1>
-        <div className="flex justify-between items-end mt-12 border-t border-white/30 pt-6">
-            <p className="text-xl md:text-2xl font-medium max-w-md break-keep">
-                디지털 프로덕트 스튜디오
+        <div className="flex justify-between items-end w-full border-t border-rm-black pt-8 mt-12">
+            <p className="max-w-sm text-lg md:text-xl font-medium leading-tight">
+                A digital product design studio crafting unusual experiences for forward-thinking brands.
             </p>
-            <ArrowDown className="w-12 h-12 animate-bounce" />
+            <div className="animate-bounce p-4 border border-rm-black rounded-full">
+                <ArrowDown className="w-6 h-6" />
+            </div>
         </div>
       </div>
     )
   },
-  { 
-    id: "work", 
-    bg: "var(--color-rm-black)", 
-    title: "프로젝트", 
+  {
+    id: "work-intro",
+    bg: "var(--color-rm-black)",
     textColor: "white",
-    type: "static",
     content: (
-       <div className="flex flex-col h-full">
-         <div className="space-y-8 mt-10">
-            {["뱅가드", "루미나 AI", "에이펙스 모터스"].map((project, i) => (
-                <div key={i} className="group flex items-center justify-between border-b border-white/20 pb-8 cursor-pointer">
-                    <span className="text-4xl md:text-6xl font-medium tracking-tight group-hover:text-rm-blue transition-colors break-keep">{project}</span>
-                    <span className="text-sm border border-white/20 rounded-full px-3 py-1">202{4-i}</span>
-                </div>
-            ))}
-         </div>
-         <div className="mt-auto pb-20">
-            <button className="bg-rm-blue text-white px-8 py-4 rounded-full text-xl font-bold hover:scale-105 transition-transform w-full md:w-auto break-keep">
-                전체 프로젝트 보기
-            </button>
-         </div>
-       </div>
-    )
-  },
-  { 
-    id: "journal", 
-    bg: "var(--color-rm-green)", 
-    title: "블로그", 
-    textColor: "black",
-    type: "static",
-    content: (
-        <div className="flex flex-col h-full">
-             <div className="grid gap-6 mt-10">
-                {[
-                    { title: "플랫 디자인의 종말과 새로운 흐름", date: "10월 24일", tag: "칼럼" },
-                    { title: "AI 시대를 위한 디자인 시스템 구축하기", date: "09월 12일", tag: "테크" },
-                    { title: "2025년 디자인 트렌드 전망 보고서", date: "08월 05일", tag: "리포트" }
-                ].map((post, i) => (
-                    <div key={i} className="group flex flex-col md:flex-row md:items-center justify-between border-b border-black/10 pb-6 cursor-pointer hover:pl-4 transition-all duration-300">
-                        <div className="flex flex-col gap-1">
-                            <div className="flex items-center gap-2 mb-1">
-                                <span className="text-xs font-bold uppercase tracking-widest border border-black/20 px-2 py-0.5 rounded-full">{post.tag}</span>
-                                <span className="text-xs font-mono opacity-60">{post.date}</span>
-                            </div>
-                            <h3 className="text-2xl md:text-4xl font-bold leading-tight group-hover:text-white transition-colors break-keep">{post.title}</h3>
-                        </div>
-                        <ArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity w-10 h-10 mt-4 md:mt-0" />
-                    </div>
-                ))}
-             </div>
-             <div className="mt-auto pb-20">
-                <p className="text-xl font-medium max-w-2xl opacity-80 break-keep">
-                    인터페이스 디자인, 크리에이티브 코딩, 그리고 디지털 제품의 미래에 대한 생각들을 기록합니다.
-                </p>
-             </div>
+        <div className="flex flex-col justify-between h-full p-12">
+            <span className="text-7xl font-bold">01</span>
+            <h2 className="text-[12vw] leading-none font-bold uppercase tracking-tighter">Selected<br/>Works</h2>
         </div>
     )
-  },
-  { 
-    id: "talent", 
-    bg: "var(--color-rm-blue)", 
-    title: "팀 & 문화", 
-    textColor: "white",
-    type: "static",
-    content: (
-        <div className="flex flex-col h-full justify-between pb-20">
-            <p className="text-3xl md:text-5xl font-medium leading-tight max-w-4xl break-keep">
-                우리는 디지털 상호작용의 미래를 만드는 디자이너, 엔지니어, 그리고 전략가들의 집단입니다.
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm">
-                    <h3 className="text-2xl font-bold mb-2">Design</h3>
-                    <p className="opacity-80 break-keep">UI/UX, 모션 그래픽, 3D 인터랙션</p>
-                </div>
-                <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm">
-                     <h3 className="text-2xl font-bold mb-2">Tech</h3>
-                     <p className="opacity-80 break-keep">풀스택 개발, WebGL, 인공지능</p>
-                </div>
-            </div>
-        </div>
-    )
-  },
-  { 
-    id: "contact", 
-    bg: "var(--color-rm-beige)", 
-    title: "문의하기", 
-    textColor: "black",
-    type: "footer", // Special type for animation
-    content: (
-        // Content is handled inside the component for this specific card
-        null 
-    )
-  },
+  }
+];
+
+const projects = [
+    { title: "855-HOW-TO-QUIT", category: "Social Impact", color: "var(--color-rm-orange)" },
+    { title: "Vanguard", category: "Fintech", color: "var(--color-rm-blue)" },
+    { title: "Lumina AI", category: "Technology", color: "var(--color-rm-green)" }
 ];
 
 export default function StickyCardStack() {
   return (
-    <div className="bg-black min-h-screen pb-20 font-sans">
-      {/* Sticky Header: Icon Menu Left, No Title, No Blur */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between px-6 py-6 mix-blend-difference text-white pointer-events-none bg-transparent">
-        <button className="pointer-events-auto hover:opacity-50 transition-opacity">
+    <div className="bg-rm-beige min-h-screen font-sans overflow-x-hidden">
+      {/* Sticky Navigation (Actual Layout) */}
+      <nav className="fixed top-0 left-0 bottom-0 w-[226px] hidden lg:flex flex-col items-center py-12 z-[1000] mix-blend-difference text-white pointer-events-none border-right border-white/5">
+        <div className="pointer-events-auto cursor-pointer mb-12">
             <Menu className="w-8 h-8" />
-        </button>
-        {/* Empty span to maintain flex layout if needed, currently just one item on left */}
-        <span></span> 
+        </div>
+        <div className="flex flex-col gap-4 items-start w-full px-8 mt-auto mb-12 opacity-50 text-sm font-mono">
+            <span>[01] HELLO</span>
+            <span>[02] WORK</span>
+            <span>[03] TALENT</span>
+            <span>[04] CONTACT</span>
+        </div>
       </nav>
 
-      <div className="flex flex-col relative">
-        {cards.map((card, i) => (
-          <StickyCard key={card.id} {...card} index={i} />
+      {/* Main Content Area */}
+      <div className="lg:pl-[226px] w-full flex flex-col gap-4 p-4">
+        
+        {/* Landing Section */}
+        <section className="w-full bg-white border border-rm-black/10 rounded-[16px] overflow-hidden min-h-[90vh]">
+            {sections[0].content}
+        </section>
+
+        {/* Section Divider Style */}
+        <div className="sticky top-4 z-[50] bg-rm-orange text-white h-[40px] rounded-[16px] flex items-center justify-between px-12 shadow-lg">
+            <span className="text-xs font-bold uppercase">Work</span>
+            <span className="text-xs font-mono">01</span>
+        </div>
+
+        {/* Work Intro Card */}
+        <section className="w-full h-[60vh] bg-rm-black text-white rounded-[16px] overflow-hidden">
+            {sections[1].content}
+        </section>
+
+        {/* Dynamic Project Cards */}
+        {projects.map((project, i) => (
+            <ProjectCard key={i} {...project} index={i} />
         ))}
+
+        {/* Footer Card */}
+        <section className="w-full h-screen bg-rm-beige border border-rm-black rounded-[16px] flex flex-col items-center justify-center p-12 relative overflow-hidden">
+             <motion.h2 
+                initial={{ x: "100%" }}
+                whileInView={{ x: "-50%" }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="text-[25vw] font-bold whitespace-nowrap opacity-10 absolute pointer-events-none"
+             >
+                LET'S TALK RAW MATERIALS LET'S TALK RAW MATERIALS
+             </motion.h2>
+             <a href="mailto:hello@rawmaterials.com" className="text-4xl md:text-7xl font-bold underline decoration-rm-orange decoration-4 underline-offset-8 hover:text-rm-orange transition-colors z-10">
+                hello@rawmaterials.com
+             </a>
+             <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 w-full z-10">
+                {["Instagram", "Twitter", "LinkedIn", "Careers"].map(link => (
+                    <div key={link} className="border-t border-rm-black pt-4 flex justify-between items-center group cursor-pointer">
+                        <span className="font-bold uppercase text-sm">{link}</span>
+                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    </div>
+                ))}
+             </div>
+        </section>
+
       </div>
     </div>
   );
 }
 
-function StickyCard({ bg, title, textColor, index, content, type }: any) {
-  const cardRef = useRef(null);
-  // Stacking logic: Each card sticks top + offset
-  const stickyTop = index * 50; 
-
-  // For footer parallax animation
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end end"]
-  });
-  
-  // Transform x position based on scroll (only for footer)
-  const xMovement = useTransform(scrollYProgress, [0, 1], ["100%", "0%"]);
+function ProjectCard({ title, category, color, index }: any) {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <motion.div
-      ref={cardRef}
-      style={{ 
-        backgroundColor: bg, 
-        color: textColor,
-        top: stickyTop, 
-        zIndex: index 
-      }}
-      className="sticky w-full h-screen rounded-t-[24px] border-t border-black/5 overflow-hidden shadow-[0_-10px_30px_rgba(0,0,0,0.3)] origin-top"
+    <motion.div 
+      onClick={() => setIsOpen(!isOpen)}
+      layout
+      className={`relative w-full cursor-pointer rounded-[16px] overflow-hidden bg-rm-black border border-white/5 shadow-2xl rm-transition ${isOpen ? 'h-[70vh]' : 'h-[11.1vw] min-h-[120px]'}`}
     >
-      <div className="p-6 md:p-12 pt-20 flex flex-col h-full relative">
-        {/* Card Title (Visible in the sticky header area) */}
-        <h2 className="absolute top-6 right-6 md:right-12 text-sm font-bold uppercase tracking-widest opacity-80">
-            {title}
-        </h2>
+        {/* Placeholder for project background - usually a video or high res image */}
+        <div className={`absolute inset-0 opacity-40 bg-gradient-to-br from-rm-black to-transparent`} style={{ backgroundColor: color }}></div>
         
-        {/* Content Container */}
-        <div className="mt-4 h-full relative overflow-hidden">
-            {type === "footer" ? (
-                 <div className="flex flex-col h-full justify-center">
-                    <motion.div style={{ x: xMovement }} className="w-full">
-                         <a href="mailto:hello@rawmaterials.co" className="text-[12vw] font-bold tracking-tighter hover:text-rm-orange transition-colors block leading-none whitespace-nowrap">
-                            hello@rawmaterials.co
-                        </a>
-                    </motion.div>
-                    
-                     <div className="flex gap-4 mt-12">
-                        <button className="bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-rm-orange transition-colors">
-                            Instagram
-                        </button>
-                        <button className="bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-rm-orange transition-colors">
-                            LinkedIn
-                        </button>
-                     </div>
-                     
-                     {/* Moving colored strip */}
-                     <motion.div 
-                        style={{ x: useTransform(scrollYProgress, [0, 1], ["-100%", "0%"]) }}
-                        className="absolute bottom-0 left-0 w-full h-8 bg-rm-green"
-                     />
-                 </div>
-            ) : (
-                content
+        <div className="relative z-10 h-full p-8 md:p-12 flex flex-col justify-center">
+            <div className="flex justify-between items-center">
+                <div className="flex flex-col">
+                    <span className="text-rm-grey text-xs uppercase font-bold mb-2 tracking-widest">{category}</span>
+                    <h3 className="text-3xl md:text-6xl font-bold text-white tracking-tighter">{title}</h3>
+                </div>
+                <div className={`w-12 h-12 rounded-full border border-white/20 flex items-center justify-center transition-transform duration-500 ${isOpen ? 'rotate-45' : ''}`}>
+                    <span className="text-2xl text-white">+</span>
+                </div>
+            </div>
+
+            {isOpen && (
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-12 flex flex-col md:flex-row justify-between items-end gap-8"
+                >
+                    <p className="max-w-xl text-xl text-white/80 leading-snug">
+                        Pushing the boundaries of digital interaction for the world's most innovative brands. 
+                        A deep dive into strategy, design, and technical execution.
+                    </p>
+                    <button className="bg-white text-rm-black px-8 py-4 rounded-full font-bold hover:bg-rm-orange hover:text-white transition-colors">
+                        View Case Study
+                    </button>
+                </motion.div>
             )}
         </div>
-      </div>
     </motion.div>
   );
 }
