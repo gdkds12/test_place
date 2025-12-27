@@ -1,26 +1,38 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Raw Materials Palette */
+  --background: #1C1C1E; /* Charcoal Black */
+  --foreground: #E6E5E0; /* Warm Beige (Text on dark) */
+  --card-bg: #E6E5E0;    /* Warm Beige (Card background) */
+  --card-fg: #1C1C1E;    /* Charcoal Black (Text on card) */
+  --accent: #FF4D00;     /* Neon Orange */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-card: var(--card-bg);
+  --color-card-foreground: var(--card-fg);
+  --color-accent: var(--accent);
+  
+  /* Extend spacing for dramatic layouts */
+  --spacing-128: 32rem;
+  --spacing-144: 36rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif; /* We will rely on system fonts or Geist if available */
+  overflow-x: hidden; /* Prevent horizontal scroll from animations */
+}
+
+/* Custom Utilities for Hide Scrollbar if needed */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
