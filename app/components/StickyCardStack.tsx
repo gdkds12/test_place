@@ -42,21 +42,27 @@ export default function StickyCardStack() {
       <div className="lg:pl-[226px] w-full flex flex-col gap-4 p-4 md:p-6">
         
         {/* HERO SECTION */}
-        <section className="sticky top-4 z-0 min-h-[90vh] bg-white border border-rm-black/10 rounded-[16px] p-8 md:p-12 flex flex-col justify-between">
+        <section className="sticky top-4 z-0 min-h-[85vh] bg-white border border-rm-black/10 rounded-[16px] p-8 md:p-12 flex flex-col justify-start gap-12">
             <div className="flex justify-between w-full border-b border-rm-black/10 pb-4">
                 <span className="text-xs font-bold uppercase tracking-widest">Raw Materials</span>
-                <span className="text-xs font-bold uppercase tracking-widest">Est. 2025</span>
+                <div className="flex gap-4">
+                    {["All", "Design", "Tech", "Insights"].map((cat) => (
+                        <span key={cat} className="text-xs font-bold uppercase tracking-widest cursor-pointer hover:text-rm-orange transition-colors">
+                            {cat}
+                        </span>
+                    ))}
+                </div>
             </div>
             
-            <div className="mt-auto">
-                <h1 className="text-[17vw] leading-[0.8] font-bold tracking-tighter uppercase whitespace-pre-line mb-8">
+            <div className="mt-8">
+                <h1 className="text-[13vw] leading-[0.85] font-bold tracking-tighter uppercase whitespace-pre-line mb-8">
                     {heroContent.title}
                 </h1>
-                <div className="flex flex-col md:flex-row justify-between items-end border-t border-rm-black pt-8">
-                    <p className="text-xl md:text-3xl font-medium leading-tight max-w-2xl">
+                <div className="flex flex-col md:flex-row justify-between items-start border-t border-rm-black pt-8 gap-8">
+                    <p className="text-xl md:text-2xl font-medium leading-tight max-w-xl">
                         {heroContent.subtitle}
                     </p>
-                    <ArrowDown className="w-8 h-8 mt-8 md:mt-0 animate-bounce" />
+                    <ArrowDown className="w-8 h-8 animate-bounce" />
                 </div>
             </div>
         </section>
@@ -131,12 +137,11 @@ function ProjectCard({ title, category, color, index, total, progress, targetSca
       ref={cardRef}
       style={{ 
         top: topOffset,
-        // The last card shouldn't shrink, previous ones should
-        // scale: isOpen ? 1 : 1 // Logic placeholder for advanced scaling if needed
       }}
       onClick={() => setIsOpen(!isOpen)}
       layout
-      className={`sticky w-full cursor-pointer rounded-[16px] overflow-hidden bg-rm-black border border-white/5 shadow-2xl origin-top transition-all duration-700 ease-[0.85,0,0.15,1] ${isOpen ? 'h-[80vh] z-50' : 'h-[14vw] min-h-[160px] z-0'}`}
+      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+      className={`sticky w-full cursor-pointer rounded-[16px] overflow-hidden bg-rm-black border border-white/5 shadow-2xl origin-top ${isOpen ? 'h-[80vh] z-50' : 'h-[14vw] min-h-[160px] z-0'}`}
     >
         {/* Background Color/Media */}
         <div className="absolute inset-0 transition-opacity duration-500" style={{ backgroundColor: color, opacity: isOpen ? 1 : 0.9 }}></div>
