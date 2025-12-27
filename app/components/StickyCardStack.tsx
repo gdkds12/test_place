@@ -8,17 +8,17 @@ const cards = [
   { 
     id: "hello", 
     bg: "var(--color-rm-orange)", 
-    title: "Hello", 
+    title: "안녕하세요", 
     textColor: "white",
     type: "static",
     content: (
       <div className="flex flex-col justify-center h-full pb-20 pt-20">
-        <h1 className="text-[15vw] leading-[0.8] font-bold tracking-tighter uppercase mix-blend-overlay">
-          Raw <br/> Materials
+        <h1 className="text-[15vw] leading-[0.8] font-bold tracking-tighter uppercase mix-blend-overlay break-keep">
+          로우 <br/> 머티리얼즈
         </h1>
         <div className="flex justify-between items-end mt-12 border-t border-white/30 pt-6">
-            <p className="text-xl md:text-2xl font-medium max-w-md">
-                Digital Product Studio
+            <p className="text-xl md:text-2xl font-medium max-w-md break-keep">
+                디지털 프로덕트 스튜디오
             </p>
             <ArrowDown className="w-12 h-12 animate-bounce" />
         </div>
@@ -28,22 +28,22 @@ const cards = [
   { 
     id: "work", 
     bg: "var(--color-rm-black)", 
-    title: "Work", 
+    title: "프로젝트", 
     textColor: "white",
     type: "static",
     content: (
        <div className="flex flex-col h-full">
          <div className="space-y-8 mt-10">
-            {["Vanguard", "Lumina", "Apex"].map((project, i) => (
+            {["뱅가드", "루미나 AI", "에이펙스 모터스"].map((project, i) => (
                 <div key={i} className="group flex items-center justify-between border-b border-white/20 pb-8 cursor-pointer">
-                    <span className="text-4xl md:text-6xl font-medium tracking-tight group-hover:text-rm-blue transition-colors">{project}</span>
+                    <span className="text-4xl md:text-6xl font-medium tracking-tight group-hover:text-rm-blue transition-colors break-keep">{project}</span>
                     <span className="text-sm border border-white/20 rounded-full px-3 py-1">202{4-i}</span>
                 </div>
             ))}
          </div>
          <div className="mt-auto pb-20">
-            <button className="bg-rm-blue text-white px-8 py-4 rounded-full text-xl font-bold hover:scale-105 transition-transform w-full md:w-auto">
-                View All Projects
+            <button className="bg-rm-blue text-white px-8 py-4 rounded-full text-xl font-bold hover:scale-105 transition-transform w-full md:w-auto break-keep">
+                전체 프로젝트 보기
             </button>
          </div>
        </div>
@@ -52,29 +52,32 @@ const cards = [
   { 
     id: "journal", 
     bg: "var(--color-rm-green)", 
-    title: "Journal", 
+    title: "블로그", 
     textColor: "black",
     type: "static",
     content: (
         <div className="flex flex-col h-full">
              <div className="grid gap-6 mt-10">
                 {[
-                    { title: "The Death of Flat Design", date: "Oct 24", tag: "Opinion" },
-                    { title: "Building specifically for AI", date: "Sep 12", tag: "Tech" },
-                    { title: "Our 2025 Design Trends", date: "Aug 05", tag: "Report" }
+                    { title: "플랫 디자인의 종말과 새로운 흐름", date: "10월 24일", tag: "칼럼" },
+                    { title: "AI 시대를 위한 디자인 시스템 구축하기", date: "09월 12일", tag: "테크" },
+                    { title: "2025년 디자인 트렌드 전망 보고서", date: "08월 05일", tag: "리포트" }
                 ].map((post, i) => (
                     <div key={i} className="group flex flex-col md:flex-row md:items-center justify-between border-b border-black/10 pb-6 cursor-pointer hover:pl-4 transition-all duration-300">
-                        <div>
-                            <span className="text-xs font-mono uppercase tracking-widest opacity-60 mb-2 block">{post.tag} — {post.date}</span>
-                            <h3 className="text-3xl md:text-5xl font-bold leading-tight group-hover:text-white transition-colors">{post.title}</h3>
+                        <div className="flex flex-col gap-1">
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="text-xs font-bold uppercase tracking-widest border border-black/20 px-2 py-0.5 rounded-full">{post.tag}</span>
+                                <span className="text-xs font-mono opacity-60">{post.date}</span>
+                            </div>
+                            <h3 className="text-2xl md:text-4xl font-bold leading-tight group-hover:text-white transition-colors break-keep">{post.title}</h3>
                         </div>
-                        <ArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity w-10 h-10" />
+                        <ArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity w-10 h-10 mt-4 md:mt-0" />
                     </div>
                 ))}
              </div>
              <div className="mt-auto pb-20">
-                <p className="text-xl font-medium max-w-2xl opacity-80">
-                    Thoughts on interface design, creative coding, and the future of digital products.
+                <p className="text-xl font-medium max-w-2xl opacity-80 break-keep">
+                    인터페이스 디자인, 크리에이티브 코딩, 그리고 디지털 제품의 미래에 대한 생각들을 기록합니다.
                 </p>
              </div>
         </div>
@@ -83,22 +86,22 @@ const cards = [
   { 
     id: "talent", 
     bg: "var(--color-rm-blue)", 
-    title: "Talent", 
+    title: "팀 & 문화", 
     textColor: "white",
     type: "static",
     content: (
         <div className="flex flex-col h-full justify-between pb-20">
-            <p className="text-4xl md:text-6xl font-medium leading-tight max-w-4xl">
-                We are a collective of designers, engineers, and strategists building the future of digital interaction.
+            <p className="text-3xl md:text-5xl font-medium leading-tight max-w-4xl break-keep">
+                우리는 디지털 상호작용의 미래를 만드는 디자이너, 엔지니어, 그리고 전략가들의 집단입니다.
             </p>
             <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm">
                     <h3 className="text-2xl font-bold mb-2">Design</h3>
-                    <p className="opacity-80">UI/UX, Motion, 3D</p>
+                    <p className="opacity-80 break-keep">UI/UX, 모션 그래픽, 3D 인터랙션</p>
                 </div>
                 <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm">
                      <h3 className="text-2xl font-bold mb-2">Tech</h3>
-                     <p className="opacity-80">Full-stack, WebGL, AI</p>
+                     <p className="opacity-80 break-keep">풀스택 개발, WebGL, 인공지능</p>
                 </div>
             </div>
         </div>
@@ -107,7 +110,7 @@ const cards = [
   { 
     id: "contact", 
     bg: "var(--color-rm-beige)", 
-    title: "Contact", 
+    title: "문의하기", 
     textColor: "black",
     type: "footer", // Special type for animation
     content: (
@@ -120,13 +123,13 @@ const cards = [
 export default function StickyCardStack() {
   return (
     <div className="bg-black min-h-screen pb-20 font-sans">
-      {/* Sticky Header: No Title, Icon Menu, No Blur */}
+      {/* Sticky Header: Icon Menu Left, No Title, No Blur */}
       <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between px-6 py-6 mix-blend-difference text-white pointer-events-none bg-transparent">
-        {/* Empty span to maintain flex-between layout if needed, or remove title completely */}
-        <span></span> 
         <button className="pointer-events-auto hover:opacity-50 transition-opacity">
             <Menu className="w-8 h-8" />
         </button>
+        {/* Empty span to maintain flex layout if needed, currently just one item on left */}
+        <span></span> 
       </nav>
 
       <div className="flex flex-col relative">
