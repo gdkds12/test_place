@@ -1,112 +1,116 @@
 "use client";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef, useState } from "react";
 import { Menu, ArrowDown, ArrowUpRight } from "lucide-react";
 
-// The actual site has specific card heights and behaviors
-const sections = [
-  {
-    id: "landing",
-    bg: "var(--color-rm-beige)",
-    content: (
-      <div className="flex flex-col items-center w-full px-6 md:px-12 pt-24">
-        <div className="flex justify-between w-full mb-8 border-b border-rm-black/10 pb-4">
-            <span className="text-sm font-medium uppercase tracking-tighter">Raw Materials</span>
-            <span className="text-sm font-medium uppercase tracking-tighter">Studio &copy; 2025</span>
-        </div>
-        <h1 className="text-[18vw] leading-[0.8] font-bold tracking-tighter uppercase w-full text-left mb-12">
-          Unusual<br/>Digital
-        </h1>
-        <div className="flex justify-between items-end w-full border-t border-rm-black pt-8 mt-12">
-            <p className="max-w-sm text-lg md:text-xl font-medium leading-tight">
-                A digital product design studio crafting unusual experiences for forward-thinking brands.
-            </p>
-            <div className="animate-bounce p-4 border border-rm-black rounded-full">
-                <ArrowDown className="w-6 h-6" />
-            </div>
-        </div>
-      </div>
-    )
-  },
-  {
-    id: "work-intro",
-    bg: "var(--color-rm-black)",
-    textColor: "white",
-    content: (
-        <div className="flex flex-col justify-between h-full p-12">
-            <span className="text-7xl font-bold">01</span>
-            <h2 className="text-[12vw] leading-none font-bold uppercase tracking-tighter">Selected<br/>Works</h2>
-        </div>
-    )
-  }
-];
+// Exact Content from Analysis
+const heroContent = {
+    title: "Raw\nMaterials",
+    subtitle: "We design and launch unusually creative digital products that change brands' fortunes."
+};
 
 const projects = [
-    { title: "855-HOW-TO-QUIT", category: "Social Impact", color: "var(--color-rm-orange)" },
-    { title: "Vanguard", category: "Fintech", color: "var(--color-rm-blue)" },
-    { title: "Lumina AI", category: "Technology", color: "var(--color-rm-green)" }
+    { title: "7-Eleven Rewards", category: "Retail Experience", color: "#EE2526" }, // 7-Eleven Red
+    { title: "Volta Charging", category: "EV Infrastructure", color: "#FFD93E" },   // Volta Yellow
+    { title: "Meta AI", category: "Artificial Intelligence", color: "#0064E0" },    // Meta Blue
+    { title: "Project Aria", category: "Augmented Reality", color: "#83807C" }      // Grey
 ];
 
 export default function StickyCardStack() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
   return (
-    <div className="bg-rm-beige min-h-screen font-sans overflow-x-hidden">
-      {/* Sticky Navigation (Actual Layout) */}
+    <div ref={containerRef} className="bg-rm-beige min-h-screen font-sans overflow-x-hidden selection:bg-rm-orange selection:text-white">
+      {/* Sidebar Navigation */}
       <nav className="fixed top-0 left-0 bottom-0 w-[226px] hidden lg:flex flex-col items-center py-12 z-[1000] mix-blend-difference text-white pointer-events-none border-right border-white/5">
-        <div className="pointer-events-auto cursor-pointer mb-12">
+        <div className="pointer-events-auto cursor-pointer mb-12 hover:opacity-50 transition-opacity">
             <Menu className="w-8 h-8" />
         </div>
-        <div className="flex flex-col gap-4 items-start w-full px-8 mt-auto mb-12 opacity-50 text-sm font-mono">
-            <span>[01] HELLO</span>
-            <span>[02] WORK</span>
-            <span>[03] TALENT</span>
-            <span>[04] CONTACT</span>
+        <div className="flex flex-col gap-6 items-start w-full px-8 mt-auto mb-12 opacity-60 text-xs font-mono tracking-widest">
+            <span className="hover:text-rm-orange transition-colors cursor-pointer pointer-events-auto">[01] HELLO</span>
+            <span className="hover:text-rm-orange transition-colors cursor-pointer pointer-events-auto">[02] WORK</span>
+            <span className="hover:text-rm-orange transition-colors cursor-pointer pointer-events-auto">[03] TALENT</span>
+            <span className="hover:text-rm-orange transition-colors cursor-pointer pointer-events-auto">[04] CONTACT</span>
         </div>
       </nav>
 
-      {/* Main Content Area */}
-      <div className="lg:pl-[226px] w-full flex flex-col gap-4 p-4">
+      {/* Main Content */}
+      <div className="lg:pl-[226px] w-full flex flex-col gap-4 p-4 md:p-6">
         
-        {/* Landing Section */}
-        <section className="w-full bg-white border border-rm-black/10 rounded-[16px] overflow-hidden min-h-[90vh]">
-            {sections[0].content}
+        {/* HERO SECTION */}
+        <section className="sticky top-4 z-0 min-h-[90vh] bg-white border border-rm-black/10 rounded-[16px] p-8 md:p-12 flex flex-col justify-between">
+            <div className="flex justify-between w-full border-b border-rm-black/10 pb-4">
+                <span className="text-xs font-bold uppercase tracking-widest">Raw Materials</span>
+                <span className="text-xs font-bold uppercase tracking-widest">Est. 2025</span>
+            </div>
+            
+            <div className="mt-auto">
+                <h1 className="text-[17vw] leading-[0.8] font-bold tracking-tighter uppercase whitespace-pre-line mb-8">
+                    {heroContent.title}
+                </h1>
+                <div className="flex flex-col md:flex-row justify-between items-end border-t border-rm-black pt-8">
+                    <p className="text-xl md:text-3xl font-medium leading-tight max-w-2xl">
+                        {heroContent.subtitle}
+                    </p>
+                    <ArrowDown className="w-8 h-8 mt-8 md:mt-0 animate-bounce" />
+                </div>
+            </div>
         </section>
 
-        {/* Section Divider Style */}
-        <div className="sticky top-4 z-[50] bg-rm-orange text-white h-[40px] rounded-[16px] flex items-center justify-between px-12 shadow-lg">
-            <span className="text-xs font-bold uppercase">Work</span>
-            <span className="text-xs font-mono">01</span>
+        {/* STICKY DIVIDER */}
+        <div className="sticky top-8 z-10 bg-rm-orange text-white h-[48px] rounded-[16px] flex items-center justify-between px-8 shadow-xl mx-2 md:mx-0">
+            <span className="text-sm font-bold uppercase tracking-widest">Selected Works</span>
+            <span className="text-sm font-mono">01</span>
         </div>
 
-        {/* Work Intro Card */}
-        <section className="w-full h-[60vh] bg-rm-black text-white rounded-[16px] overflow-hidden">
-            {sections[1].content}
-        </section>
+        {/* PROJECT STACK */}
+        <div className="relative flex flex-col gap-4 mb-24">
+            {projects.map((project, i) => {
+                // Calculate scale based on position in stack relative to total
+                const targetScale = 1 - ((projects.length - i) * 0.025); 
+                return (
+                    <ProjectCard 
+                        key={i} 
+                        {...project} 
+                        index={i} 
+                        total={projects.length}
+                        progress={scrollYProgress}
+                        targetScale={targetScale}
+                    />
+                );
+            })}
+        </div>
 
-        {/* Dynamic Project Cards */}
-        {projects.map((project, i) => (
-            <ProjectCard key={i} {...project} index={i} />
-        ))}
+        {/* FOOTER / CONTACT */}
+        <section className="sticky bottom-4 z-0 w-full h-[80vh] bg-rm-beige border border-rm-black rounded-[16px] flex flex-col items-center justify-center p-8 overflow-hidden">
+             <div className="absolute inset-0 flex items-center justify-center opacity-[0.08] pointer-events-none overflow-hidden">
+                 <motion.h2 
+                    animate={{ x: ["0%", "-50%"] }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                    className="text-[40vw] font-bold whitespace-nowrap leading-none"
+                 >
+                    LET'S TALK LET'S TALK 
+                 </motion.h2>
+             </div>
+             
+             <div className="z-10 text-center">
+                 <p className="text-sm font-bold uppercase tracking-widest mb-4">Start a Project</p>
+                 <a href="mailto:hello@rawmaterials.com" className="text-[8vw] leading-none font-bold underline decoration-rm-orange decoration-4 underline-offset-8 hover:text-rm-orange transition-colors">
+                    hello@<br/>rawmaterials.com
+                 </a>
+             </div>
 
-        {/* Footer Card */}
-        <section className="w-full h-screen bg-rm-beige border border-rm-black rounded-[16px] flex flex-col items-center justify-center p-12 relative overflow-hidden">
-             <motion.h2 
-                initial={{ x: "100%" }}
-                whileInView={{ x: "-50%" }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="text-[25vw] font-bold whitespace-nowrap opacity-10 absolute pointer-events-none"
-             >
-                LET'S TALK RAW MATERIALS LET'S TALK RAW MATERIALS
-             </motion.h2>
-             <a href="mailto:hello@rawmaterials.com" className="text-4xl md:text-7xl font-bold underline decoration-rm-orange decoration-4 underline-offset-8 hover:text-rm-orange transition-colors z-10">
-                hello@rawmaterials.com
-             </a>
-             <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 w-full z-10">
-                {["Instagram", "Twitter", "LinkedIn", "Careers"].map(link => (
-                    <div key={link} className="border-t border-rm-black pt-4 flex justify-between items-center group cursor-pointer">
-                        <span className="font-bold uppercase text-sm">{link}</span>
-                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                    </div>
-                ))}
+             <div className="absolute bottom-8 left-8 right-8 flex justify-between border-t border-rm-black pt-4">
+                <span className="text-xs font-bold uppercase">San Francisco, CA</span>
+                <div className="flex gap-4">
+                    {["IG", "TW", "LN"].map(link => (
+                        <a key={link} href="#" className="text-xs font-bold hover:text-rm-orange transition-colors">{link}</a>
+                    ))}
+                </div>
              </div>
         </section>
 
@@ -115,44 +119,56 @@ export default function StickyCardStack() {
   );
 }
 
-function ProjectCard({ title, category, color, index }: any) {
+function ProjectCard({ title, category, color, index, total, progress, targetScale }: any) {
   const [isOpen, setIsOpen] = useState(false);
+  const cardRef = useRef(null);
+  
+  // Dynamic offset for "stacking" feel
+  const topOffset = 80 + (index * 60); 
 
   return (
     <motion.div 
+      ref={cardRef}
+      style={{ 
+        top: topOffset,
+        // The last card shouldn't shrink, previous ones should
+        // scale: isOpen ? 1 : 1 // Logic placeholder for advanced scaling if needed
+      }}
       onClick={() => setIsOpen(!isOpen)}
       layout
-      className={`relative w-full cursor-pointer rounded-[16px] overflow-hidden bg-rm-black border border-white/5 shadow-2xl rm-transition ${isOpen ? 'h-[70vh]' : 'h-[11.1vw] min-h-[120px]'}`}
+      className={`sticky w-full cursor-pointer rounded-[16px] overflow-hidden bg-rm-black border border-white/5 shadow-2xl origin-top transition-all duration-700 ease-[0.85,0,0.15,1] ${isOpen ? 'h-[80vh] z-50' : 'h-[14vw] min-h-[160px] z-0'}`}
     >
-        {/* Placeholder for project background - usually a video or high res image */}
-        <div className={`absolute inset-0 opacity-40 bg-gradient-to-br from-rm-black to-transparent`} style={{ backgroundColor: color }}></div>
+        {/* Background Color/Media */}
+        <div className="absolute inset-0 transition-opacity duration-500" style={{ backgroundColor: color, opacity: isOpen ? 1 : 0.9 }}></div>
         
-        <div className="relative z-10 h-full p-8 md:p-12 flex flex-col justify-center">
-            <div className="flex justify-between items-center">
-                <div className="flex flex-col">
-                    <span className="text-rm-grey text-xs uppercase font-bold mb-2 tracking-widest">{category}</span>
-                    <h3 className="text-3xl md:text-6xl font-bold text-white tracking-tighter">{title}</h3>
+        <div className="relative z-10 h-full p-6 md:p-10 flex flex-col justify-between">
+            <div className="flex justify-between items-start">
+                <div>
+                    <span className="inline-block px-3 py-1 mb-4 border border-black/20 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/20 backdrop-blur-md text-black">
+                        {category}
+                    </span>
+                    <h3 className={`font-bold text-black tracking-tighter leading-[0.9] transition-all duration-500 ${isOpen ? 'text-[8vw]' : 'text-[6vw]'}`}>
+                        {title}
+                    </h3>
                 </div>
-                <div className={`w-12 h-12 rounded-full border border-white/20 flex items-center justify-center transition-transform duration-500 ${isOpen ? 'rotate-45' : ''}`}>
-                    <span className="text-2xl text-white">+</span>
+                
+                <div className={`w-12 h-12 rounded-full bg-white text-black flex items-center justify-center transition-transform duration-500 ${isOpen ? 'rotate-45' : 'rotate-0'}`}>
+                    <ArrowUpRight className="w-5 h-5" />
                 </div>
             </div>
 
-            {isOpen && (
-                <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-12 flex flex-col md:flex-row justify-between items-end gap-8"
-                >
-                    <p className="max-w-xl text-xl text-white/80 leading-snug">
-                        Pushing the boundaries of digital interaction for the world's most innovative brands. 
-                        A deep dive into strategy, design, and technical execution.
+            {/* Expanded Content */}
+            <div className={`transition-all duration-700 delay-100 ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 hidden'}`}>
+                <div className="bg-white/90 backdrop-blur-xl p-8 rounded-[16px] max-w-2xl">
+                    <p className="text-xl font-medium leading-relaxed mb-6">
+                        An award-winning collaboration redefining how users interact with the brand ecosystem.
+                        Focused on seamless transitions, bold typography, and intuitive motion.
                     </p>
-                    <button className="bg-white text-rm-black px-8 py-4 rounded-full font-bold hover:bg-rm-orange hover:text-white transition-colors">
+                    <button className="text-sm font-bold uppercase tracking-widest border-b border-black pb-1 hover:text-rm-orange hover:border-rm-orange transition-colors">
                         View Case Study
                     </button>
-                </motion.div>
-            )}
+                </div>
+            </div>
         </div>
     </motion.div>
   );
