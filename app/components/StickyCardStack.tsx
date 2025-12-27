@@ -2,6 +2,7 @@
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef, useState } from "react";
 import { Menu, ArrowDown, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 // Exact Content from Analysis
 const heroContent = {
@@ -16,7 +17,7 @@ const projects = [
     { title: "Project Aria", category: "Augmented Reality", color: "#83807C" }      // Grey
 ];
 
-export default function StickyCardStack() {
+export default function StickyCardStack({ initialPosts = [] }: { initialPosts?: any[] }) {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -90,6 +91,29 @@ export default function StickyCardStack() {
                 );
             })}
         </div>
+
+        {/* JOURNAL SECTION (CMS Integrated) */}
+        {initialPosts.length > 0 && (
+            <div className="flex flex-col gap-4 mb-24">
+                <div className="sticky top-12 z-10 bg-rm-green text-rm-black h-[48px] rounded-[16px] flex items-center justify-between px-8 shadow-xl">
+                    <span className="text-sm font-bold uppercase tracking-widest">Journal</span>
+                    <span className="text-sm font-mono">02</span>
+                </div>
+                {initialPosts.map((post, i) => (
+                    <Link key={post.slug} href={`/journal/${post.slug}`} className="w-full">
+                        <div className="bg-white border border-rm-black/10 rounded-[16px] p-8 md:p-12 hover:bg-rm-beige transition-colors group">
+                            <div className="flex justify-between items-center">
+                                <div className="flex flex-col">
+                                    <span className="text-xs font-bold uppercase tracking-widest opacity-60 mb-2">{post.tag}</span>
+                                    <h3 className="text-2xl md:text-4xl font-bold tracking-tighter uppercase">{post.title}</h3>
+                                </div>
+                                <ArrowUpRight className="w-8 h-8 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform" />
+                            </div>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+        )}
 
         {/* FOOTER / CONTACT */}
         <section className="sticky bottom-4 z-0 w-full h-[80vh] bg-rm-beige border border-rm-black rounded-[16px] flex flex-col items-center justify-center p-8 overflow-hidden">
