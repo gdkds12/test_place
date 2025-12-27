@@ -1,34 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  /* Raw Materials Palette */
-  --background: #1C1C1E; /* Charcoal Black */
-  --foreground: #E6E5E0; /* Warm Beige (Text on dark) */
-  --card-bg: #E6E5E0;    /* Warm Beige (Card background) */
-  --card-fg: #1C1C1E;    /* Charcoal Black (Text on card) */
-  --accent: #FF4D00;     /* Neon Orange */
+  /* Raw Materials Refined Palette */
+  --color-orange: #FF4D00; /* Neon Orange - Hello Section */
+  --color-blue: #3B42F5;   /* Electric Blue - Talent Section */
+  --color-green: #00FF00;  /* Neon Green - Footer Accent */
+  --color-beige: #F2F0E9;  /* Soft Beige - Contact/Text Cards */
+  --color-black: #111111;  /* Rich Black - Work Section */
+  
+  --background: var(--color-black);
+  --foreground: var(--color-beige);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card-bg);
-  --color-card-foreground: var(--card-fg);
-  --color-accent: var(--accent);
+  --color-rm-orange: var(--color-orange);
+  --color-rm-blue: var(--color-blue);
+  --color-rm-green: var(--color-green);
+  --color-rm-beige: var(--color-beige);
+  --color-rm-black: var(--color-black);
   
-  /* Extend spacing for dramatic layouts */
-  --spacing-128: 32rem;
-  --spacing-144: 36rem;
+  --font-sans: 'Inter', sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif; /* We will rely on system fonts or Geist if available */
-  overflow-x: hidden; /* Prevent horizontal scroll from animations */
+  font-family: Arial, Helvetica, sans-serif; /* Fallback */
+  overflow-x: hidden;
 }
 
-/* Custom Utilities for Hide Scrollbar if needed */
+/* Utilities */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

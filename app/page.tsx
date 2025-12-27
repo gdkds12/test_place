@@ -1,13 +1,9 @@
-import Hero from "./components/Hero";
-import CardStack from "./components/CardStack";
-import Footer from "./components/Footer";
+import StickyCardStack from "./components/StickyCardStack";
 
 export default function Home() {
   return (
-    <main className="w-full">
-      <Hero />
-      <CardStack />
-      <Footer />
+    <main className="w-full bg-black">
+      <StickyCardStack />
     </main>
   );
 }
