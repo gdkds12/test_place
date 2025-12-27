@@ -1,7 +1,7 @@
 "use client";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef } from "react";
-import { ArrowUpRight, ArrowDown } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 
 // Section Data
 const cards = [
@@ -10,6 +10,7 @@ const cards = [
     bg: "var(--color-rm-orange)", 
     title: "Hello", 
     textColor: "white",
+    type: "static",
     content: (
       <div className="flex flex-col justify-end h-full pb-20">
         <h1 className="text-[15vw] leading-[0.8] font-bold tracking-tighter uppercase mix-blend-overlay">
@@ -29,6 +30,7 @@ const cards = [
     bg: "var(--color-rm-black)", 
     title: "Work", 
     textColor: "white",
+    type: "static",
     content: (
        <div className="flex flex-col h-full">
          <div className="space-y-8 mt-10">
@@ -52,6 +54,7 @@ const cards = [
     bg: "var(--color-rm-blue)", 
     title: "Talent", 
     textColor: "white",
+    type: "static",
     content: (
         <div className="flex flex-col h-full justify-between pb-20">
             <p className="text-4xl md:text-6xl font-medium leading-tight max-w-4xl">
@@ -75,23 +78,10 @@ const cards = [
     bg: "var(--color-rm-beige)", 
     title: "Contact", 
     textColor: "black",
+    type: "footer", // Special type for animation
     content: (
-        <div className="flex flex-col h-full justify-between pb-20">
-             <div>
-                <a href="mailto:hello@rawmaterials.co" className="text-[8vw] font-bold tracking-tighter hover:text-rm-orange transition-colors block leading-none">
-                    hello@<br/>rawmaterials.co
-                </a>
-             </div>
-             <div className="flex gap-4">
-                <button className="bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-rm-orange transition-colors">
-                    Instagram
-                </button>
-                <button className="bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-rm-orange transition-colors">
-                    LinkedIn
-                </button>
-             </div>
-             <div className="absolute bottom-0 left-0 w-full h-4 bg-rm-green"></div>
-        </div>
+        // Content is handled inside the component for this specific card
+        null 
     )
   },
 ];
@@ -99,27 +89,38 @@ const cards = [
 export default function StickyCardStack() {
   return (
     <div className="bg-black min-h-screen pb-20 font-sans">
-      {/* Sticky Header with Mix-Blend-Mode */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between px-6 py-6 mix-blend-difference text-white pointer-events-none">
+      {/* Sticky Header with Backdrop Blur and Mix-Blend-Mode */}
+      <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between px-6 py-6 mix-blend-difference text-white pointer-events-none backdrop-blur-md bg-transparent">
         <span className="text-xl font-bold tracking-tighter uppercase">Raw Materials</span>
         <span className="font-mono text-sm">[MENU]</span>
       </nav>
 
       <div className="flex flex-col relative">
         {cards.map((card, i) => (
-          <StickyCard key={card.id} {...card} index={i} total={cards.length} />
+          <StickyCard key={card.id} {...card} index={i} />
         ))}
       </div>
     </div>
   );
 }
 
-function StickyCard({ bg, title, textColor, index, content }: any) {
+function StickyCard({ bg, title, textColor, index, content, type }: any) {
+  const cardRef = useRef(null);
   // Stacking logic: Each card sticks top + offset
-  const stickyTop = index * 50; // 50px offset allows previous card headers to peek through
+  const stickyTop = index * 50; 
+
+  // For footer parallax animation
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end end"]
+  });
   
+  // Transform x position based on scroll (only for footer)
+  const xMovement = useTransform(scrollYProgress, [0, 1], ["100%", "0%"]);
+
   return (
     <motion.div
+      ref={cardRef}
       style={{ 
         backgroundColor: bg, 
         color: textColor,
@@ -129,19 +130,39 @@ function StickyCard({ bg, title, textColor, index, content }: any) {
       className="sticky w-full h-screen rounded-t-[24px] border-t border-black/5 overflow-hidden shadow-[0_-10px_30px_rgba(0,0,0,0.3)] origin-top"
     >
       <div className="p-6 md:p-12 pt-20 flex flex-col h-full relative">
-        {/* Section Number */}
-        <span className="absolute top-6 left-6 md:left-12 text-sm font-mono opacity-60">
-            0{index + 1}
-        </span>
-        
         {/* Card Title (Visible in the sticky header area) */}
         <h2 className="absolute top-6 right-6 md:right-12 text-sm font-bold uppercase tracking-widest opacity-80">
             {title}
         </h2>
         
         {/* Content Container */}
-        <div className="mt-4 h-full">
-            {content}
+        <div className="mt-4 h-full relative overflow-hidden">
+            {type === "footer" ? (
+                 <div className="flex flex-col h-full justify-center">
+                    <motion.div style={{ x: xMovement }} className="w-full">
+                         <a href="mailto:hello@rawmaterials.co" className="text-[12vw] font-bold tracking-tighter hover:text-rm-orange transition-colors block leading-none whitespace-nowrap">
+                            hello@rawmaterials.co
+                        </a>
+                    </motion.div>
+                    
+                     <div className="flex gap-4 mt-12">
+                        <button className="bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-rm-orange transition-colors">
+                            Instagram
+                        </button>
+                        <button className="bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-rm-orange transition-colors">
+                            LinkedIn
+                        </button>
+                     </div>
+                     
+                     {/* Moving colored strip */}
+                     <motion.div 
+                        style={{ x: useTransform(scrollYProgress, [0, 1], ["-100%", "0%"]) }}
+                        className="absolute bottom-0 left-0 w-full h-8 bg-rm-green"
+                     />
+                 </div>
+            ) : (
+                content
+            )}
         </div>
       </div>
     </motion.div>
