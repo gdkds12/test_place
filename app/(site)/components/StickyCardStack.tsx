@@ -1,5 +1,5 @@
 "use client";
-import { motion, useScroll, useTransform, MotionValue, LayoutGroup } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef, useState } from "react";
 import { Menu, ArrowDown, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
@@ -44,9 +44,8 @@ export default function StickyCardStack({ initialPosts = [] }: { initialPosts?: 
         
         {/* HERO SECTION */}
         <section className="sticky top-4 z-0 min-h-[85vh] bg-white border border-rm-black/10 rounded-[16px] p-8 md:p-12 flex flex-col justify-start gap-12">
-            <div className="flex justify-between w-full border-b border-rm-black/10 pb-4">
-                <span className="text-xs font-bold uppercase tracking-widest">Raw Materials</span>
-                <div className="flex gap-4">
+            <div className="flex justify-center w-full border-b border-rm-black/10 pb-4 relative">
+                <div className="flex gap-8">
                     {["All", "Design", "Tech", "Insights"].map((cat) => (
                         <span key={cat} className="text-xs font-bold uppercase tracking-widest cursor-pointer hover:text-rm-orange transition-colors">
                             {cat}
@@ -63,7 +62,7 @@ export default function StickyCardStack({ initialPosts = [] }: { initialPosts?: 
                     <p className="text-xl md:text-2xl font-medium leading-tight max-w-xl">
                         {heroContent.subtitle}
                     </p>
-                    <ArrowDown className="w-8 h-8 animate-bounce" />
+                    <ArrowDown className="w-8 h-8 mt-8 md:mt-0 animate-bounce" />
                 </div>
             </div>
         </section>
@@ -74,19 +73,17 @@ export default function StickyCardStack({ initialPosts = [] }: { initialPosts?: 
             <span className="text-sm font-mono">01</span>
         </div>
 
-        {/* PROJECT STACK (Now List with Expansion) */}
-        <LayoutGroup>
-            <div className="flex flex-col gap-4 mb-24">
-                {projects.map((project, i) => (
-                    <ProjectCard 
-                        key={i} 
-                        {...project} 
-                        index={i} 
-                        total={projects.length}
-                    />
-                ))}
-            </div>
-        </LayoutGroup>
+        {/* PROJECT STACK (Animations Removed) */}
+        <div className="flex flex-col gap-4 mb-24">
+            {projects.map((project, i) => (
+                <ProjectCard 
+                    key={i} 
+                    {...project} 
+                    index={i} 
+                    total={projects.length}
+                />
+            ))}
+        </div>
 
         {/* JOURNAL SECTION (CMS Integrated) */}
         {initialPosts.length > 0 && (
@@ -149,78 +146,50 @@ function ProjectCard({ title, category, color, index, total }: any) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <motion.div 
-      layout
+    <div 
       onClick={() => setIsOpen(!isOpen)}
-      className={`relative w-full cursor-pointer rounded-[16px] overflow-hidden bg-rm-black border border-white/5 shadow-xl origin-top group`}
-      style={{
-        zIndex: isOpen ? 10 : 1,
-      }}
-      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+      className={`relative w-full cursor-pointer rounded-[16px] overflow-hidden bg-rm-black border border-white/5 shadow-md transition-all duration-300 ${isOpen ? 'min-h-[60vh]' : 'h-[14vw] min-h-[140px]'}`}
     >
-        {/* Background Color/Media */}
-        <motion.div 
-            layout="position"
-            className="absolute inset-0 transition-opacity duration-500" 
+        {/* Background Color */}
+        <div 
+            className="absolute inset-0" 
             style={{ backgroundColor: color, opacity: isOpen ? 1 : 0.9 }}
         />
         
         {/* Content Container */}
         <div className="relative z-10 p-6 md:p-10 flex flex-col">
-            {/* Header Row */}
-            <motion.div layout="position" className="flex justify-between items-start w-full">
+            <div className="flex justify-between items-start w-full">
                 <div>
-                    <motion.span 
-                        layout="position"
-                        className="inline-block px-3 py-1 mb-4 border border-black/20 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/20 backdrop-blur-md text-black"
-                    >
+                    <span className="inline-block px-3 py-1 mb-4 border border-black/20 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/20 backdrop-blur-md text-black">
                         {category}
-                    </motion.span>
-                    <motion.h3 
-                        layout="position"
-                        className={`font-bold text-black tracking-tighter leading-[0.9] transition-all duration-500 ${isOpen ? 'text-[8vw] mb-8' : 'text-[6vw]'}`}
-                    >
+                    </span>
+                    <h3 className={`font-bold text-black tracking-tighter leading-[0.9] ${isOpen ? 'text-[8vw] mb-8' : 'text-[6vw]'}`}>
                         {title}
-                    </motion.h3>
+                    </h3>
                 </div>
                 
-                <motion.div 
-                    layout="position"
-                    className={`w-12 h-12 rounded-full bg-white text-black flex items-center justify-center transition-transform duration-500 ${isOpen ? 'rotate-45' : 'rotate-0'}`}
-                >
+                <div className={`w-12 h-12 rounded-full bg-white text-black flex items-center justify-center transition-transform duration-300 ${isOpen ? 'rotate-45' : 'rotate-0'}`}>
                     <ArrowUpRight className="w-5 h-5" />
-                </motion.div>
-            </motion.div>
+                </div>
+            </div>
 
             {/* Expanded Content Body */}
             {isOpen && (
-                <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ delay: 0.1, duration: 0.4 }}
-                    className="mt-4"
-                >
+                <div className="mt-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
                     <div className="bg-white/90 backdrop-blur-xl p-8 rounded-[16px] max-w-3xl shadow-lg">
                         <div className="flex flex-col md:flex-row gap-8 items-end">
                             <p className="text-lg md:text-xl font-medium leading-relaxed text-rm-black/80">
                                 An award-winning collaboration redefining how users interact with the brand ecosystem. 
-                                Focused on seamless transitions, bold typography, and intuitive motion design that feels physically present.
+                                Focused on seamless transitions, bold typography, and intuitive design that feels physically present.
                             </p>
                             <button className="whitespace-nowrap px-6 py-3 bg-rm-black text-white rounded-full font-bold text-sm uppercase tracking-widest hover:bg-rm-orange transition-colors">
                                 View Case Study
                             </button>
                         </div>
                     </div>
-                    
-                    {/* Placeholder for extra media/images in expanded state */}
-                    <div className="mt-8 grid grid-cols-2 gap-4">
-                        <div className="aspect-video bg-black/10 rounded-lg"></div>
-                        <div className="aspect-video bg-black/10 rounded-lg"></div>
-                    </div>
-                </motion.div>
+                </div>
             )}
         </div>
-    </motion.div>
+    </div>
   );
 }

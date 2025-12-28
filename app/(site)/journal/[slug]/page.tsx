@@ -48,7 +48,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
         </header>
 
         {/* Content */}
-        <article className="prose prose-lg md:prose-xl prose-neutral max-w-none">
+        <article className="prose prose-neutral max-w-none prose-p:leading-[1.8] prose-p:tracking-wide prose-p:mb-8 prose-headings:tracking-tight prose-li:leading-[1.8] prose-li:tracking-wide text-rm-black/90">
             <DocumentRenderer document={content} />
         </article>
       </main>
